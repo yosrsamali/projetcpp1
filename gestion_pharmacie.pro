@@ -1,7 +1,11 @@
 QT       += core gui sql multimedia multimediawidgets charts
-
+QT += network
+QT +=svg
+QT +=serialport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+TARGET = gestion_pharmacie
+TEMPLATE = app
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -16,15 +20,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    arduino.cpp \
     connection.cpp \
     main.cpp \
     mainwindow.cpp \
-    pharmacie.cpp
+    pharmacie.cpp \
+    qrcode.cpp \
+    qrcodegeneratordemo.cpp \
+    qrcodegeneratorworker.cpp \
+    qrwidget.cpp
 
 HEADERS += \
+    arduino.h \
     connection.h \
     mainwindow.h \
-    pharmacie.h
+    pharmacie.h \
+    qrcode.h \
+    qrwidget.h
 
 FORMS += \
     mainwindow.ui

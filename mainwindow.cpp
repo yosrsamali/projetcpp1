@@ -18,6 +18,30 @@
 #include <QSqlError>
 #include <QtCharts/QChart>
 #include <QPieSeries>
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <iostream>
+#include <fstream>
+#include <QMessageBox>
+#include <QIntValidator>
+#include <QSqlQueryModel>
+#include <QSqlQuery>
+#include <QFile>
+#include <QSortFilterProxyModel>
+#include <QtPrintSupport/QPrinter>
+#include <QPdfWriter>
+#include <QPainter>
+
+#include <QFileDialog>
+#include <QTextDocument>
+#include <QTextEdit>
+#include <QTextStream>
+#include<QWidget>
+#include <QtSvg/QSvgRenderer>
+#include<QDirModel>
+#include "qrcode.h"
+using qrcodegen::QrCode;
+using qrcodegen::QrSegment;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -89,24 +113,22 @@ void MainWindow::on_supprimer_clicked()
             return;
         }
 
-        // Récupère l'ID de l'enregistrement sélectionné dans le tableau
         int id = ui->tableView->model()->data(ui->tableView->model()->index(row, 0)).toInt();
 
 
-        // Affiche un message de confirmation demandant à l'utilisateur s'il est sûr de vouloir supprimer les informations de l'enregistrement sélectionné
         QMessageBox msgbox;
         msgbox.setText("Voulez-vous vraiment supprimer ces informations ?");
         msgbox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgbox.setDefaultButton(QMessageBox::No);
         int res = msgbox.exec();
 
-        // Si l'utilisateur confirme la suppression, crée un objet Donataire et appelle la fonction "supprimer" pour supprimer l'enregistrement correspondant
+
         if (res == QMessageBox::Yes) {
             pharmacie c1;
             c1.setId(id);
             bool test = c1.supprimer(c1.getId());
 
-            // Affiche un message de succès ou d'échec
+
             if(test) {
                 QMessageBox::information(this, "Succès", "Suppression avec succès");
                 ui->tableView->setModel(c.afficher());
@@ -121,7 +143,7 @@ void MainWindow::on_modifier_clicked()
 {
     int id=ui->id_pha->text().toInt();
 
-    // Vérifier que tous les champs sont remplis
+
         if (ui->nom_pha->text().isEmpty() || ui->hor_pha->text().isEmpty() ||
             ui->ad_pha->text().isEmpty() || ui->num_pha->text().isEmpty()) {
             QMessageBox::warning(this, "Erreur", "Veuillez remplir tous les champs !");
@@ -292,7 +314,7 @@ void MainWindow::on_search_returnPressed()
 
 void MainWindow::on_stat_butt_clicked()
 {
-    // Create a chart object
+
           QChart *chart = new QChart();
 
           // Set the chart title
@@ -339,4 +361,29 @@ void MainWindow::on_stat_butt_clicked()
               layout->addWidget(chartView);
               ui->frame_stat->setLayout(layout);
           }
+}
+
+
+void MainWindow::on_QR_clicked()
+{
+    if(ui->tableView->currentIndex().row()==-1)
+                   QMessageBox::information(nullptr, QObject::tr("Suppression"),
+                                            QObject::tr("Veuillez Choisir un identifiant.\n"
+                                                        "Click Ok to exit."), QMessageBox::Ok);
+               else
+               {
+
+                    int le_id=ui->tableView->model()->data(ui->tableView->model()->index(ui->tableView->currentIndex().row(),0)).toInt();
+                    const QrCode qr = QrCode::encodeText(std::to_string(le_id).c_str(), QrCode::Ecc::LOW);
+                    std::ofstream myfile;
+                    myfile.open ("qrcode.svg") ;
+                    myfile << qr.toSvgString(1);
+                    myfile.close();
+                    QPixmap pix( QSize(90, 90) );
+                    QPainter pixPainter( &pix );
+                    QSvgRenderer svgRenderer(QString("qrcode.svg"));
+                    svgRenderer.render( &pixPainter );
+                    ui->QRCODE_3->setPixmap(pix);
+
+               }
 }

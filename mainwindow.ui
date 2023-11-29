@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
+    <width>850</width>
     <height>600</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@ this-&gt;setStyleSheet(styleSheet);
 </string>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="widget">
       <attribute name="title">
@@ -291,7 +291,7 @@ color:black;
 }</string>
        </property>
        <property name="text">
-        <string>traduction</string>
+        <string/>
        </property>
        <property name="icon">
         <iconset>
@@ -523,13 +523,39 @@ color:black;
      </widget>
     </widget>
    </widget>
+   <widget class="QPushButton" name="QR">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>400</y>
+      <width>121</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>generate qr code</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="QRCODE_3">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>280</y>
+      <width>121</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>592</width>
+     <width>850</width>
      <height>26</height>
     </rect>
    </property>

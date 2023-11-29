@@ -32,6 +32,10 @@ private slots:
 
     void on_stat_butt_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_QR_clicked();
+
 private:
     Ui::MainWindow *ui;
     pharmacie c;
